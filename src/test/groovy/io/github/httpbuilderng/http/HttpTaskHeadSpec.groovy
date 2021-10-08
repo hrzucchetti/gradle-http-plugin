@@ -23,8 +23,6 @@ import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static GradleBuild.textContainsLines
-import static GradleBuild.totalSuccess
 import static com.stehno.ersatz.ContentType.TEXT_PLAIN
 
 class HttpTaskHeadSpec extends Specification {
@@ -73,10 +71,10 @@ class HttpTaskHeadSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
@@ -118,10 +116,10 @@ class HttpTaskHeadSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived A!', 'I have arrived B!', 'I have arrived C!']
+        GradleBuild.textContainsLines result.output, ['I have arrived A!', 'I have arrived B!', 'I have arrived C!']
 
         and:
         ersatz.verify()
@@ -156,10 +154,10 @@ class HttpTaskHeadSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
@@ -193,10 +191,10 @@ class HttpTaskHeadSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
@@ -233,10 +231,10 @@ class HttpTaskHeadSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()

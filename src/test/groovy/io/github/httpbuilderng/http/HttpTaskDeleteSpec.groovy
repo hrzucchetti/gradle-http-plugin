@@ -26,13 +26,11 @@ import spock.lang.Unroll
 
 import java.util.function.Consumer
 
-import static GradleBuild.textContainsLines
-import static GradleBuild.totalSuccess
-
 class HttpTaskDeleteSpec extends Specification {
 
-    @Rule GradleBuild gradle = new GradleBuild(
-        template: '''
+    @Rule
+    GradleBuild gradle = new GradleBuild(
+            template: '''
             plugins {
                 id 'io.github.http-builder-ng.http-plugin'
             }
@@ -51,7 +49,8 @@ class HttpTaskDeleteSpec extends Specification {
         '''
     )
 
-    @AutoCleanup(value = 'stop') private ErsatzServer ersatz = new ErsatzServer()
+    @AutoCleanup(value = 'stop')
+    private ErsatzServer ersatz = new ErsatzServer()
 
     def 'single DELETE request'() {
         setup:
@@ -75,10 +74,10 @@ class HttpTaskDeleteSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
@@ -112,10 +111,10 @@ class HttpTaskDeleteSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
@@ -150,23 +149,24 @@ class HttpTaskDeleteSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
     }
 
-    @Unroll 'single DELETE request (external config with #library)'() {
+    @Unroll
+    'single DELETE request (external config with #library)'() {
         setup:
         ersatz.expectations {
             delete('/notify').called(1).responds().code(204)
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = $library
                     config {
@@ -174,7 +174,7 @@ class HttpTaskDeleteSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             delete {
                 request.uri.path = '/notify'
                 response.when(204){ 
@@ -187,22 +187,22 @@ class HttpTaskDeleteSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I have arrived!']
+        GradleBuild.textContainsLines result.output, ['I have arrived!']
 
         and:
         ersatz.verify()
 
         where:
         library << [
-            "io.github.httpbuilderng.http.HttpLibrary.CORE",
-            "io.github.httpbuilderng.http.HttpLibrary.APACHE",
-            "io.github.httpbuilderng.http.HttpLibrary.OKHTTP",
-            "'core'",
-            "'apache'",
-            "'okhttp'",
+                "io.github.httpbuilderng.http.HttpLibrary.CORE",
+                "io.github.httpbuilderng.http.HttpLibrary.APACHE",
+                "io.github.httpbuilderng.http.HttpLibrary.OKHTTP",
+                "'core'",
+                "'apache'",
+                "'okhttp'",
         ]
     }
 }

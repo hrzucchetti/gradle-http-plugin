@@ -24,8 +24,6 @@ import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static GradleBuild.textContainsLines
-import static GradleBuild.totalSuccess
 import static com.stehno.ersatz.ContentType.APPLICATION_JSON
 import static com.stehno.ersatz.ContentType.TEXT_PLAIN
 
@@ -83,10 +81,10 @@ class HttpTaskPutSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -130,10 +128,10 @@ class HttpTaskPutSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -176,10 +174,10 @@ class HttpTaskPutSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -219,10 +217,10 @@ class HttpTaskPutSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -265,10 +263,10 @@ class HttpTaskPutSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()

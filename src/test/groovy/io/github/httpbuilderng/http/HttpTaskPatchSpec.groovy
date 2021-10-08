@@ -24,14 +24,13 @@ import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static GradleBuild.textContainsLines
-import static GradleBuild.totalSuccess
 import static com.stehno.ersatz.ContentType.APPLICATION_JSON
 
 class HttpTaskPatchSpec extends Specification {
 
-    @Rule GradleBuild gradle = new GradleBuild(
-        template: '''
+    @Rule
+    GradleBuild gradle = new GradleBuild(
+            template: '''
             plugins {
                 id 'io.github.http-builder-ng.http-plugin'
             }
@@ -50,7 +49,8 @@ class HttpTaskPatchSpec extends Specification {
         '''
     )
 
-    @AutoCleanup(value = 'stop') private ErsatzServer ersatz = new ErsatzServer({
+    @AutoCleanup(value = 'stop')
+    private ErsatzServer ersatz = new ErsatzServer({
         decoder APPLICATION_JSON, Decoders.parseJson
     })
 
@@ -65,12 +65,12 @@ class HttpTaskPatchSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = 'apache'
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             config {
                 request.uri = '${ersatz.httpUrl}'
             }
@@ -88,10 +88,10 @@ class HttpTaskPatchSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -108,12 +108,12 @@ class HttpTaskPatchSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = 'okhttp'
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             config {
                 request.uri = '${ersatz.httpUrl}'
                 response.success {
@@ -141,10 +141,10 @@ class HttpTaskPatchSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -161,12 +161,12 @@ class HttpTaskPatchSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = 'okhttp'
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             config {
                 request.uri = '${ersatz.httpUrl}'
                 response.success {
@@ -193,16 +193,17 @@ class HttpTaskPatchSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
     }
 
-    @Unroll 'single PATCH request (external config with #library)'() {
+    @Unroll
+    'single PATCH request (external config with #library)'() {
         setup:
         ersatz.expectations {
             patch('/something') {
@@ -213,7 +214,7 @@ class HttpTaskPatchSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = $library
                     config {
@@ -221,7 +222,7 @@ class HttpTaskPatchSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             patch {
                 request.uri.path = '/something'
                 request.body = [id:42]
@@ -236,10 +237,10 @@ class HttpTaskPatchSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I succeeded']
+        GradleBuild.textContainsLines result.output, ['I succeeded']
 
         and:
         ersatz.verify()
@@ -247,10 +248,10 @@ class HttpTaskPatchSpec extends Specification {
         where:
         // Note: the core library does not support PATCH
         library << [
-            "io.github.httpbuilderng.http.HttpLibrary.APACHE",
-            "io.github.httpbuilderng.http.HttpLibrary.OKHTTP",
-            "'apache'",
-            "'okhttp'",
+                "io.github.httpbuilderng.http.HttpLibrary.APACHE",
+                "io.github.httpbuilderng.http.HttpLibrary.OKHTTP",
+                "'apache'",
+                "'okhttp'",
         ]
     }
 }

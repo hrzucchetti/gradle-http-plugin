@@ -1,7 +1,7 @@
 plugins {
     id 'com.github.hierynomus.license' version '0.13.1'
     id 'com.github.kt3k.coveralls' version '2.8.1'
-    id 'com.gradle.plugin-publish' version '0.9.7'
+    id 'com.gradle.plugin-publish' version '0.16.0'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'jacoco'
@@ -9,10 +9,11 @@ plugins {
     id 'com.stehno.gradle.webpreview' version '0.2.0'
     id 'org.asciidoctor.convert' version '1.5.3'
     id 'com.stehno.gradle.site' version '0.0.3'
+    id 'org.ajoberstar.git-publish' version '3.0.0'
 }
 
-version = '0.1.1'
-group = 'io.github.http-builder-ng'
+version = '0.2.0'
+group = 'it.salmattia.http-plugin'
 
 sourceCompatibility = 8
 targetCompatibility = 8
@@ -26,24 +27,24 @@ configurations {
 }
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
+    implementation gradleApi()
+    implementation localGroovy()
 
-    groovyDoc 'org.codehaus.groovy:groovy-groovydoc:2.4.12'
-    groovyDoc 'org.codehaus.groovy:groovy-ant:2.4.12'
+    groovyDoc 'org.codehaus.groovy:groovy-groovydoc:3.0.7'
+    groovyDoc 'org.codehaus.groovy:groovy-ant:3.0.7'
 
     // TODO: ideally the plugin would download the desired client only
-    compile("io.github.http-builder-ng:http-builder-ng-apache:$httpBuilderVersion") {
+    implementation("io.github.http-builder-ng:http-builder-ng-apache:$httpBuilderVersion") {
         exclude module: 'groovy-all'
     }
-    compile("io.github.http-builder-ng:http-builder-ng-okhttp:$httpBuilderVersion") {
+    implementation("io.github.http-builder-ng:http-builder-ng-okhttp:$httpBuilderVersion") {
         exclude module: 'groovy-all'
     }
 
-    testCompile('org.spockframework:spock-core:1.1-groovy-2.4') {
+    testImplementation('org.spockframework:spock-core:2.0-groovy-3.0') {
         exclude module: 'groovy-all'
     }
-    testCompile('com.stehno.ersatz:ersatz:1.5.0') {
+    testImplementation('com.stehno.ersatz:ersatz:1.5.0') {
         exclude module: 'groovy-all'
         exclude group: 'ch.qos.logback'
     }
@@ -77,21 +78,21 @@ license {
 gradlePlugin {
     plugins {
         httpPlugin {
-            id = 'io.github.http-builder-ng.http-plugin'
+            id = 'it.salmattia.http-plugin.http-plugin'
             implementationClass = 'io.github.httpbuilderng.http.HttpPlugin'
         }
     }
 }
 
 pluginBundle {
-    website = 'https://github.com/http-builder-ng/gradle-http-plugin'
-    vcsUrl = 'https://github.com/http-builder-ng/gradle-http-plugin'
+    website = 'https://github.com/salmattia/gradle-http-plugin'
+    vcsUrl = 'https://github.com/salmattia/gradle-http-plugin'
     description = 'Gradle plugin to aid in creating HTTP calls as tasks.'
     tags = ['gradle', 'groovy']
 
     plugins {
         httpPlugin {
-            id = 'io.github.http-builder-ng.http-plugin'
+            id = 'it.salmattia.http-plugin.http-plugin'
             displayName = 'Gradle HTTP Plugin'
         }
     }
@@ -105,13 +106,23 @@ jacocoTestReport {
 }
 
 task publishSite(type: GradleBuild, group: 'Publishing', description: 'Publishes the documentation web site.', dependsOn: ['site']) {
-    buildFile = 'publish.gradle'
     tasks = ['gitPublishPush']
 }
 
 site {
     versionedFile 'src/docs/asciidoc/index.adoc'
     assetDir '**/fonts/**'
+}
+
+gitPublish {
+    repoUri = 'https://github.com/salmattia/gradle-http-plugin.git'
+    branch = 'gh-pages'
+
+    contents {
+        from(file('build/site')) {
+            into '.'
+        }
+    }
 }
 
 tasks.site.dependsOn = ['build', 'jacocoTestReport', 'groovydoc', 'asciidoctor']

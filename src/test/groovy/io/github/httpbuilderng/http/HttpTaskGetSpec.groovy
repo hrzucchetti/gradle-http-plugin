@@ -23,8 +23,6 @@ import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static GradleBuild.textContainsLines
-import static GradleBuild.totalSuccess
 import static com.stehno.ersatz.ContentType.TEXT_PLAIN
 
 class HttpTaskGetSpec extends Specification {
@@ -75,10 +73,10 @@ class HttpTaskGetSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I received: ok']
+        GradleBuild.textContainsLines result.output, ['I received: ok']
 
         and:
         ersatz.verify()
@@ -120,10 +118,10 @@ class HttpTaskGetSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I received: ok', 'I received: good', 'I received: bueno']
+        GradleBuild.textContainsLines result.output, ['I received: ok', 'I received: good', 'I received: bueno']
 
         and:
         ersatz.verify()
@@ -160,10 +158,10 @@ class HttpTaskGetSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild. totalSuccess result
 
         and:
-        textContainsLines result.output, ['I received: ok']
+        GradleBuild.textContainsLines result.output, ['I received: ok']
 
         and:
         ersatz.verify()
@@ -199,10 +197,10 @@ class HttpTaskGetSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I received: ok']
+        GradleBuild.textContainsLines result.output, ['I received: ok']
 
         and:
         ersatz.verify()
@@ -241,10 +239,10 @@ class HttpTaskGetSpec extends Specification {
         BuildResult result = gradle.runner('makeRequest').build()
 
         then:
-        totalSuccess result
+        GradleBuild.totalSuccess result
 
         and:
-        textContainsLines result.output, ['I received: ok']
+        GradleBuild.textContainsLines result.output, ['I received: ok']
 
         and:
         ersatz.verify()
