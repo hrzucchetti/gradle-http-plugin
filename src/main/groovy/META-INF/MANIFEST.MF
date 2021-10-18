@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: commons-codec-1.9.jar xml-resolver-1.2.jar http-builder-ng-a
- pache-1.0.3.jar httpclient-4.5.2.jar httpcore-4.4.4.jar gradle-installa
- tion-beacon-4.3.1.jar okio-1.11.0.jar slf4j-api-1.7.21.jar groovy-all-2
- .4.12.jar gradle-installation-beacon-4.3.1.jar gradle-api-4.3.1.jar okh
- ttp-3.5.0.jar commons-logging-1.2.jar okhttp-digest-1.10.jar http-build
- er-ng-core-1.0.3.jar gradle-api-4.3.1.jar http-builder-ng-okhttp-1.0.3.
- jar httpmime-4.5.2.jar
-
