@@ -15,22 +15,23 @@
  */
 package io.github.httpbuilderng.http
 
-import com.stehno.ersatz.Decoders
-import com.stehno.ersatz.ErsatzServer
 import com.stehno.gradle.testing.GradleBuild
+import io.github.cjstehno.ersatz.ErsatzServer
+import io.github.cjstehno.ersatz.encdec.Decoders
 import org.gradle.testkit.runner.BuildResult
 import org.junit.Rule
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.stehno.ersatz.ContentType.APPLICATION_JSON
-import static com.stehno.ersatz.ContentType.TEXT_PLAIN
+import static io.github.cjstehno.ersatz.cfg.ContentType.APPLICATION_JSON
+import static io.github.cjstehno.ersatz.cfg.ContentType.TEXT_PLAIN
 
 class HttpTaskPostSpec extends Specification {
 
-    @Rule GradleBuild gradle = new GradleBuild(
-        template: '''
+    @Rule
+    GradleBuild gradle = new GradleBuild(
+            template: '''
             plugins {
                 id 'io.github.http-builder-ng.http-plugin'
             }
@@ -49,7 +50,8 @@ class HttpTaskPostSpec extends Specification {
         '''
     )
 
-    @AutoCleanup(value = 'stop') private ErsatzServer ersatz = new ErsatzServer({
+    @AutoCleanup(value = 'stop')
+    private ErsatzServer ersatz = new ErsatzServer({
         decoder APPLICATION_JSON, Decoders.parseJson
     })
 
@@ -199,7 +201,8 @@ class HttpTaskPostSpec extends Specification {
         ersatz.verify()
     }
 
-    @Unroll 'single POST request (external config with #library)'() {
+    @Unroll
+    'single POST request (external config with #library)'() {
         setup:
         ersatz.expectations {
             post('/something') {
@@ -212,7 +215,7 @@ class HttpTaskPostSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = io.github.httpbuilderng.http.HttpLibrary.$library
                     config {
@@ -220,7 +223,7 @@ class HttpTaskPostSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             post {
                 request.uri.path = '/something'
                 request.body = [id:42]
@@ -247,7 +250,8 @@ class HttpTaskPostSpec extends Specification {
         library << HttpLibrary.values()*.name()
     }
 
-    @Unroll 'single POST request (external config with #library as string)'() {
+    @Unroll
+    'single POST request (external config with #library as string)'() {
         setup:
         ersatz.expectations {
             post('/something') {
@@ -260,7 +264,7 @@ class HttpTaskPostSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = '$library'
                     config {
@@ -268,7 +272,7 @@ class HttpTaskPostSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
                 post {
                     request.uri.path = '/something'
                     request.body = [id:42]

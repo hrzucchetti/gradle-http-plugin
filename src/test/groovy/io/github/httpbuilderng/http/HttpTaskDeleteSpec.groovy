@@ -15,16 +15,14 @@
  */
 package io.github.httpbuilderng.http
 
-import com.stehno.ersatz.ErsatzServer
+
 import com.stehno.gradle.testing.GradleBuild
-import groovyx.net.http.HttpConfig
+import io.github.cjstehno.ersatz.ErsatzServer
 import org.gradle.testkit.runner.BuildResult
 import org.junit.Rule
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
-
-import java.util.function.Consumer
 
 class HttpTaskDeleteSpec extends Specification {
 

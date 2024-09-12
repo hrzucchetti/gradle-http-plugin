@@ -15,20 +15,20 @@
  */
 package io.github.httpbuilderng.http
 
-import com.stehno.ersatz.ErsatzServer
+
 import com.stehno.gradle.testing.GradleBuild
+import io.github.cjstehno.ersatz.ErsatzServer
 import org.gradle.testkit.runner.BuildResult
 import org.junit.Rule
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.stehno.ersatz.ContentType.TEXT_PLAIN
-
 class HttpTaskHeadSpec extends Specification {
 
-    @Rule GradleBuild gradle = new GradleBuild(
-        template: '''
+    @Rule
+    GradleBuild gradle = new GradleBuild(
+            template: '''
             plugins {
                 id 'io.github.http-builder-ng.http-plugin'
             }
@@ -47,7 +47,8 @@ class HttpTaskHeadSpec extends Specification {
         '''
     )
 
-    @AutoCleanup(value = 'stop') private ErsatzServer ersatz = new ErsatzServer()
+    @AutoCleanup(value = 'stop')
+    private ErsatzServer ersatz = new ErsatzServer()
 
     def 'single HEAD request'() {
         setup:
@@ -163,14 +164,15 @@ class HttpTaskHeadSpec extends Specification {
         ersatz.verify()
     }
 
-    @Unroll 'single HEAD request (external config with #library)'() {
+    @Unroll
+    'single HEAD request (external config with #library)'() {
         setup:
         ersatz.expectations {
             head('/notify').called(1).responds().code(200)
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = io.github.httpbuilderng.http.HttpLibrary.$library
                     config {
@@ -178,7 +180,7 @@ class HttpTaskHeadSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             head {
                 request.uri.path = '/notify'
                 response.success { 
@@ -203,14 +205,15 @@ class HttpTaskHeadSpec extends Specification {
         library << HttpLibrary.values()*.name()
     }
 
-    @Unroll 'single HEAD request (external config with #library as string)'() {
+    @Unroll
+    'single HEAD request (external config with #library as string)'() {
         setup:
         ersatz.expectations {
             head('/notify').called(1).responds().code(200)
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = '$library'
                     config {
@@ -218,7 +221,7 @@ class HttpTaskHeadSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             head {
                 request.uri.path = '/notify'
                 response.success { 

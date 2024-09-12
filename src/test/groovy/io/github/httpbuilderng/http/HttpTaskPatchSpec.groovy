@@ -15,16 +15,16 @@
  */
 package io.github.httpbuilderng.http
 
-import com.stehno.ersatz.Decoders
-import com.stehno.ersatz.ErsatzServer
 import com.stehno.gradle.testing.GradleBuild
+import io.github.cjstehno.ersatz.ErsatzServer
+import io.github.cjstehno.ersatz.encdec.Decoders
 import org.gradle.testkit.runner.BuildResult
 import org.junit.Rule
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.stehno.ersatz.ContentType.APPLICATION_JSON
+import static io.github.cjstehno.ersatz.cfg.ContentType.APPLICATION_JSON
 
 class HttpTaskPatchSpec extends Specification {
 

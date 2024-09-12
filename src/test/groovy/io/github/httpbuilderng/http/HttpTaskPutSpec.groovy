@@ -15,22 +15,23 @@
  */
 package io.github.httpbuilderng.http
 
-import com.stehno.ersatz.Decoders
-import com.stehno.ersatz.ErsatzServer
+
 import com.stehno.gradle.testing.GradleBuild
+import io.github.cjstehno.ersatz.ErsatzServer
+import io.github.cjstehno.ersatz.encdec.Decoders
 import org.gradle.testkit.runner.BuildResult
 import org.junit.Rule
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.stehno.ersatz.ContentType.APPLICATION_JSON
-import static com.stehno.ersatz.ContentType.TEXT_PLAIN
+import static io.github.cjstehno.ersatz.cfg.ContentType.APPLICATION_JSON
 
 class HttpTaskPutSpec extends Specification {
 
-    @Rule GradleBuild gradle = new GradleBuild(
-        template: '''
+    @Rule
+    GradleBuild gradle = new GradleBuild(
+            template: '''
             plugins {
                 id 'io.github.http-builder-ng.http-plugin'
             }
@@ -49,7 +50,8 @@ class HttpTaskPutSpec extends Specification {
         '''
     )
 
-    @AutoCleanup(value = 'stop') private ErsatzServer ersatz = new ErsatzServer({
+    @AutoCleanup(value = 'stop')
+    private ErsatzServer ersatz = new ErsatzServer({
         decoder APPLICATION_JSON, Decoders.parseJson
     })
 
@@ -183,7 +185,8 @@ class HttpTaskPutSpec extends Specification {
         ersatz.verify()
     }
 
-    @Unroll 'single PUT request (external config with #library)'() {
+    @Unroll
+    'single PUT request (external config with #library)'() {
         setup:
         ersatz.expectations {
             put('/something') {
@@ -194,7 +197,7 @@ class HttpTaskPutSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = io.github.httpbuilderng.http.HttpLibrary.$library
                     config {
@@ -202,7 +205,7 @@ class HttpTaskPutSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
             put {
                 request.uri.path = '/something'
                 request.body = [id:42]
@@ -229,7 +232,8 @@ class HttpTaskPutSpec extends Specification {
         library << HttpLibrary.values()*.name()
     }
 
-    @Unroll 'single PUT request (external config with #library as string)'() {
+    @Unroll
+    'single PUT request (external config with #library as string)'() {
         setup:
         ersatz.expectations {
             put('/something') {
@@ -240,7 +244,7 @@ class HttpTaskPutSpec extends Specification {
         }
 
         gradle.buildFile(
-            globalConfig: """
+                globalConfig: """
                 http {
                     library = '$library'
                     config {
@@ -248,7 +252,7 @@ class HttpTaskPutSpec extends Specification {
                     }
                 }
             """,
-            taskConfig: """
+                taskConfig: """
                 put {
                     request.uri.path = '/something'
                     request.body = [id:42]

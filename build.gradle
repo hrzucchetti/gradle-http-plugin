@@ -1,25 +1,30 @@
 plugins {
-    id 'com.github.hierynomus.license' version '0.13.1'
-    id 'com.github.kt3k.coveralls' version '2.8.1'
-    id 'com.gradle.plugin-publish' version '0.16.0'
+    id 'com.github.hierynomus.license' version '0.16.1'
+    id 'com.github.kt3k.coveralls' version '2.12.2'
+    id 'com.gradle.plugin-publish' version '0.18.0'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'jacoco'
     id 'maven-publish'
-    id 'com.stehno.gradle.webpreview' version '0.2.0'
-    id 'org.asciidoctor.convert' version '1.5.3'
-    id 'com.stehno.gradle.site' version '0.0.3'
-    id 'org.ajoberstar.git-publish' version '3.0.0'
+    //id 'com.stehno.gradle.webpreview' version '0.3.0'
+    //id 'com.stehno.gradle.site' version '0.0.3'
+    id 'org.asciidoctor.jvm.convert' version '4.0.3'
+    id 'org.ajoberstar.git-publish' version '3.0.1'
 }
 
-version = '0.2.0'
+configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute module('com.burgstaller:okhttp-digest:1.10') \
+        using module('io.github.rburgst:okhttp-digest:1.21') \
+        because 'okhttp-digest old version was on jcenter, which asciidoctor-gradle-plugin depends on transitively through simplified-jruby-gradle-plugin via http-builder-ng-okhttp '
+    }
+}
+
+version = '0.3.0'
 group = 'it.salmattia.http-plugin'
 
-sourceCompatibility = 8
-targetCompatibility = 8
-
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 configurations {
@@ -30,8 +35,8 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
 
-    groovyDoc 'org.codehaus.groovy:groovy-groovydoc:3.0.7'
-    groovyDoc 'org.codehaus.groovy:groovy-ant:3.0.7'
+    groovyDoc 'org.codehaus.groovy:groovy-groovydoc:3.0.22'
+    groovyDoc 'org.codehaus.groovy:groovy-ant:3.0.22'
 
     // TODO: ideally the plugin would download the desired client only
     implementation("io.github.http-builder-ng:http-builder-ng-apache:$httpBuilderVersion") {
@@ -44,10 +49,9 @@ dependencies {
     testImplementation('org.spockframework:spock-core:2.0-groovy-3.0') {
         exclude module: 'groovy-all'
     }
-    testImplementation('com.stehno.ersatz:ersatz:1.5.0') {
-        exclude module: 'groovy-all'
-        exclude group: 'ch.qos.logback'
-    }
+    testImplementation('io.github.cjstehno.ersatz:ersatz-groovy:4.0.1')
+
+    testImplementation('junit:junit:4.13.2')
 }
 
 test {
@@ -59,15 +63,21 @@ groovydoc {
 }
 
 asciidoctor {
-    options doctype: 'book'
-
-    backends = ['html5']
-
-    attributes 'source-highlighter': 'coderay',
-        'coderay-linenums-mode': 'table',
-        icon: 'font',
-        linkattrs: true,
-        encoding: 'utf-8'
+    sourceDir file('src/docs/asciidoc')
+    resources {
+        from("src/site") {
+            include 'css/**'
+            include 'fonts/**'
+            include 'js/**'
+        }
+    }
+    attributes doctype: 'book',
+            'source-highlighter': 'coderay',
+            'coderay-linenums-mode': 'table',
+            icon: 'font',
+            linkattrs: true,
+            encoding: 'utf-8'
+    outputDir file('build/site')
 }
 
 license {
@@ -100,18 +110,13 @@ pluginBundle {
 
 jacocoTestReport {
     reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
-        html.enabled = true
+        xml.required = true
+        html.required = true
     }
 }
 
-task publishSite(type: GradleBuild, group: 'Publishing', description: 'Publishes the documentation web site.', dependsOn: ['site']) {
+task publishSite(type: GradleBuild, group: 'Publishing', description: 'Publishes the documentation web site.', dependsOn: ['asciidoctor']) {
     tasks = ['gitPublishPush']
-}
-
-site {
-    versionedFile 'src/docs/asciidoc/index.adoc'
-    assetDir '**/fonts/**'
 }
 
 gitPublish {
@@ -124,5 +129,3 @@ gitPublish {
         }
     }
 }
-
-tasks.site.dependsOn = ['build', 'jacocoTestReport', 'groovydoc', 'asciidoctor']
