@@ -39,7 +39,9 @@ dependencies {
     groovyDoc 'org.codehaus.groovy:groovy-groovydoc:3.0.22'
     groovyDoc 'org.codehaus.groovy:groovy-ant:3.0.22'
 
-    // TODO: ideally the plugin would download the desired client only
+    implementation("io.github.http-builder-ng:http-builder-ng-core:$httpBuilderVersion") {
+        exclude module: 'groovy-all'
+    }
     implementation("io.github.http-builder-ng:http-builder-ng-apache:$httpBuilderVersion") {
         exclude module: 'groovy-all'
     }
