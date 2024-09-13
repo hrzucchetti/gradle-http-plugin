@@ -20,6 +20,7 @@ configurations.configureEach {
     }
 }
 
+description = 'Gradle HTTP Plugin'
 version = '0.3.0'
 group = 'it.salmattia.http-plugin'
 
@@ -94,18 +95,25 @@ gradlePlugin {
     }
 }
 
+jar {
+    manifest {
+        attributes('Implementation-Title': project.description, 'Implementation-Version': project.version)
+    }
+}
+
 pluginBundle {
-    website = 'https://github.com/salmattia/gradle-http-plugin'
-    vcsUrl = 'https://github.com/salmattia/gradle-http-plugin'
+    website = 'https://github.com/hrzucchetti/gradle-http-plugin'
+    vcsUrl = 'https://github.com/hrzucchetti/gradle-http-plugin'
     description = 'Gradle plugin to aid in creating HTTP calls as tasks.'
     tags = ['gradle', 'groovy']
 
     plugins {
         httpPlugin {
             id = 'it.salmattia.http-plugin.http-plugin'
-            displayName = 'Gradle HTTP Plugin'
+            displayName = project.description
         }
     }
+
 }
 
 jacocoTestReport {
@@ -120,7 +128,7 @@ task publishSite(type: GradleBuild, group: 'Publishing', description: 'Publishes
 }
 
 gitPublish {
-    repoUri = 'https://github.com/salmattia/gradle-http-plugin.git'
+    repoUri = 'https://github.com/hrzucchetti/gradle-http-plugin.git'
     branch = 'gh-pages'
 
     contents {
