@@ -49,7 +49,7 @@ dependencies {
     testImplementation('org.spockframework:spock-core:2.0-groovy-3.0') {
         exclude module: 'groovy-all'
     }
-    testImplementation('io.github.cjstehno.ersatz:ersatz-groovy:4.0.1')
+    testImplementation('io.github.cjstehno.ersatz:ersatz:4.0.1')
 
     testImplementation('junit:junit:4.13.2')
 }
