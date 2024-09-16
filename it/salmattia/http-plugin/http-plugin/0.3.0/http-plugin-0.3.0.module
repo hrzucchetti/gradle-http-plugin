@@ -1,0 +1,101 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "it.salmattia.http-plugin",
+    "module": "http-plugin",
+    "version": "0.3.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.4"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "http-plugin-0.3.0.jar",
+          "url": "http-plugin-0.3.0.jar",
+          "size": 14998,
+          "sha512": "2da771937a26249296ca22de4511e34bf32d23493a27c9e90b6363f9b9775b1f6dba92fd8284e607dd38930c62dd9f391c27f753311f1bfe57ee8437afbf8d11",
+          "sha256": "715b7ef65870b6cf8c42fc3f09ecf70d11c0b71fcadd62d379a457f5d639ab48",
+          "sha1": "dafb3b03b734301e87d8f6f4feb866182c5856fd",
+          "md5": "a27a815d1df25838f7e3282a34025e8e"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.http-builder-ng",
+          "module": "http-builder-ng-core",
+          "version": {
+            "requires": "1.0.4"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "groovy-all"
+            }
+          ]
+        },
+        {
+          "group": "io.github.http-builder-ng",
+          "module": "http-builder-ng-apache",
+          "version": {
+            "requires": "1.0.4"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "groovy-all"
+            }
+          ]
+        },
+        {
+          "group": "io.github.http-builder-ng",
+          "module": "http-builder-ng-okhttp",
+          "version": {
+            "requires": "1.0.4"
+          },
+          "excludes": [
+            {
+              "group": "*",
+              "module": "groovy-all"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "http-plugin-0.3.0.jar",
+          "url": "http-plugin-0.3.0.jar",
+          "size": 14998,
+          "sha512": "2da771937a26249296ca22de4511e34bf32d23493a27c9e90b6363f9b9775b1f6dba92fd8284e607dd38930c62dd9f391c27f753311f1bfe57ee8437afbf8d11",
+          "sha256": "715b7ef65870b6cf8c42fc3f09ecf70d11c0b71fcadd62d379a457f5d639ab48",
+          "sha1": "dafb3b03b734301e87d8f6f4feb866182c5856fd",
+          "md5": "a27a815d1df25838f7e3282a34025e8e"
+        }
+      ]
+    }
+  ]
+}
