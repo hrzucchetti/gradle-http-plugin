@@ -61,10 +61,6 @@ test {
     maxParallelForks = Math.min(Runtime.runtime.availableProcessors(), 8)
 }
 
-groovydoc {
-    groovyClasspath = configurations.groovyDoc
-}
-
 asciidoctor {
     sourceDir file('src/docs/asciidoc')
     resources {
@@ -108,14 +104,12 @@ pluginBundle {
     vcsUrl = 'https://github.com/hrzucchetti/gradle-http-plugin'
     description = 'Gradle plugin to aid in creating HTTP calls as tasks.'
     tags = ['gradle', 'groovy']
-
     plugins {
         httpPlugin {
             id = 'it.salmattia.http-plugin.http-plugin'
             displayName = project.description
         }
     }
-
 }
 
 jacocoTestReport {
@@ -125,17 +119,31 @@ jacocoTestReport {
     }
 }
 
-task publishSite(type: GradleBuild, group: 'Publishing', description: 'Publishes the documentation web site.', dependsOn: ['asciidoctor']) {
+task publishSite(type: GradleBuild, group: 'Publishing', description: 'Publishes the documentation web site.') {
+    dependsOn = ['asciidoctor']
     tasks = ['gitPublishPush']
 }
 
 gitPublish {
     repoUri = 'https://github.com/hrzucchetti/gradle-http-plugin.git'
     branch = 'gh-pages'
-
     contents {
         from(file('build/site')) {
             into '.'
+        }
+    }
+}
+
+publishing {
+    publications {
+        myLib(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = 'local'
+            url = "../maven"
         }
     }
 }
